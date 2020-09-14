@@ -13,7 +13,17 @@ namespace EnduranceTest
     {
         static void Main(string[] args)
         {
+            if(args.Length < 3)
+            {
+                ReportUsage();
+                return;
+            }
             CmdLine cmdLine = new CmdLine(args);
+            if(string.IsNullOrEmpty(cmdLine.AssemblyPathName) || cmdLine.Minutes == 0)
+            {
+                ReportUsage();
+                return;
+            }
 
             if (!File.Exists(cmdLine.AssemblyPathName))
             {
@@ -44,6 +54,20 @@ namespace EnduranceTest
                 runner.Run(testedMethods, cmdLine.Minutes);
             Console.WriteLine("*** Test finished press any key...");
             Console.ReadLine();
+        }
+
+        private static void ReportUsage()
+        {
+            Console.WriteLine(
+@"Usage : 
+EnduranceTest.exe TestAssembly.dll -test all|random|durationadjusted -minutes 1
+mandatory: 
+    assembly.dll name or PathName
+    -minutes greater than zero
+default:
+    -test all");
+            Console.ReadLine();
+
         }
     }
     public class CmdLine
