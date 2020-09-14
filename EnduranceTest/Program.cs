@@ -49,7 +49,8 @@ namespace EnduranceTest
                 default:
                     Console.WriteLine("UNKNOWN test runner");
                     break;
-                }
+            }
+
             if(runner != null)
                 runner.Run(testedMethods, cmdLine.Minutes);
             Console.WriteLine("*** Test finished press any key...");

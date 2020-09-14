@@ -39,36 +39,8 @@ namespace EnduranceTest
                         //double expectedDuration = GetExpectedDuration(method);
                         _methodsList.Add(new TestedMethod(method, new TestedType(testtyp)));
                     }
-
                 }
-
             }
-
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="methodInfo"></param>
-        /// <returns> -1 if no Duration attribuet property found, will be not tested</returns>
-        //private long GetExpectedDuration(MethodInfo methodInfo)
-        //{
-        //    long expectedDuration = -1;
-        //    var customAttributes = methodInfo.GetCustomAttributes(false);
-        //    var customAttribute = customAttributes[0];
-        //    var attributeType = customAttribute.GetType();
-        //    var propertyInfo = attributeType.GetProperty(TEST_DURATION);
-        //    if(propertyInfo != null)
-        //    {
-        //        object duration = propertyInfo.GetValue(customAttribute, null);
-        //        if (duration != null && long.TryParse(duration.ToString(), out expectedDuration))
-        //        {
-        //        }
-        //        else
-        //        {
-        //            expectedDuration = -1;
-        //        }
-        //    }
-        //    return expectedDuration;
-        //}
     }
 }

@@ -37,7 +37,6 @@ namespace EnduranceTest
             }
             else if (p.Length == 1 && p[0].ParameterType.FullName == "System.IO.TextWriter")
             {
-                //p[0].ParameterType.Equals(typeof(int)).Dump("isINT");
                 object[] parametersArray = new object[] { Console.Out };
                 res = TestMethod.Invoke(MethodOwnerType.Instance, parametersArray);
             }
