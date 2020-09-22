@@ -28,7 +28,7 @@ namespace EnduranceTest
         }
         private TestedMethod() { }
 
-        public object Invoke()
+        public object Invoke(System.IO.TextWriter writer)
         {
             var p = _methodInfo.GetParameters();
             object res = null;
@@ -38,7 +38,7 @@ namespace EnduranceTest
             }
             else if (p.Length == 1 && p[0].ParameterType.FullName == "System.IO.TextWriter")
             {
-                object[] parametersArray = new object[] { Console.Out };
+                object[] parametersArray = new object[] { writer };
                 res = TestMethod.Invoke(MethodOwnerType.Instance, parametersArray);
             }
 
@@ -48,12 +48,9 @@ namespace EnduranceTest
         public static bool IsTestable(MethodInfo methodInfo)
         {
             var p = methodInfo.GetParameters();
-            if (p.Length == 0)
-                return true;
-            if (p.Length == 1 && p[0].ParameterType.FullName == "System.IO.TextWriter")
-                return true;
+            return ((p.Length == 0) ||
+                (p.Length == 1 && p[0].ParameterType.FullName == "System.IO.TextWriter"));
 
-            return false;
         }
 
 

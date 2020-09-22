@@ -27,6 +27,7 @@ namespace EnduranceTest
                 ReportUsage();
                 return;
             }
+            System.IO.TextWriter writer = Console.Out;
 
             if (!File.Exists(cmdLine.AssemblyPathName))
             {
@@ -34,36 +35,61 @@ namespace EnduranceTest
                 Console.ReadLine();
                 return;
             }
-            TestedMethods testedMethods = new TestedMethods(cmdLine.AssemblyPathName);
-            Console.WriteLine($"Methods to test:  {testedMethods.Methods.Count}");
-
-            ITestRunner runner = null;
-            switch (cmdLine.TestType)
+            try
             {
-                case CmdLine.TestTypes.Random:
-                    runner = new RandomTestRunner();
-                    break;
-                case CmdLine.TestTypes.All:
-                    runner = new AllTestsRunner();
-                    break;
-                case CmdLine.TestTypes.DurationAdjusted:
-                    runner = new DurationAdjustedTestRunner();
-                    break;
-                default:
-                    Console.WriteLine("UNKNOWN test runner");
-                    break;
-            }
+                if (!string.IsNullOrEmpty(cmdLine.OutFileName))
+                {
+                    writer = GetFileWriter(cmdLine.OutFileName);
+                }
+                TestedMethods testedMethods = new TestedMethods(cmdLine.AssemblyPathName);
+                Console.WriteLine($"Methods to test:  {testedMethods.Methods.Count}");
 
-            if (runner != null)
+                ITestRunner runner = null;
+                switch (cmdLine.TestType)
+                {
+                    case CmdLine.TestTypes.Random:
+                        runner = new RandomTestRunner();
+                        break;
+                    case CmdLine.TestTypes.All:
+                        runner = new AllTestsRunner();
+                        break;
+                    case CmdLine.TestTypes.DurationAdjusted:
+                        runner = new DurationAdjustedTestRunner();
+                        break;
+                    default:
+                        Console.WriteLine("UNKNOWN test runner");
+                        break;
+                }
+
+                if (runner != null)
+                {
+                    runner.Run(testedMethods, cmdLine.Minutes, writer);
+                    Console.WriteLine($"{Environment.NewLine}----------------------------------{Environment.NewLine}");
+                    testedMethods.SimpleReport();
+                    Console.WriteLine($"{Environment.NewLine}----------------------------------{Environment.NewLine}");
+
+                }
+            }
+            catch (Exception ex)
             {
-                runner.Run(testedMethods, cmdLine.Minutes);
-                Console.WriteLine($"{Environment.NewLine}----------------------------------{Environment.NewLine}");
-                testedMethods.SimpleReport();
-                Console.WriteLine($"{Environment.NewLine}----------------------------------{Environment.NewLine}");
-
+                Console.WriteLine($"Test Failed: {Environment.NewLine}{ex.ToString()}");
             }
-            Console.WriteLine("*** Test finished press any key...");
-            Console.ReadLine();
+            finally
+            {
+                if (writer is StreamWriter sw)
+                    sw.Dispose();
+
+                Console.WriteLine("*** Test finished press any key...");
+                Console.ReadLine();
+            }
+        }
+
+        private static TextWriter GetFileWriter(string outFileName)
+        {
+            if (File.Exists(outFileName))
+                File.Delete(outFileName);
+
+            return  new StreamWriter(outFileName);
         }
 
         private static void TestConsoleOut()
@@ -89,7 +115,9 @@ mandatory:
     assembly.dll name or PathName
     -minutes greater than zero
 default:
-    -test all");
+    -test all
+optional:
+    -outfile tested method log file name");
             Console.ReadLine();
 
         }
@@ -148,6 +176,17 @@ default:
                 if (!string.IsNullOrEmpty(key))
                     return Convert.ToInt32(_cmdDict[key]);
                 return 0;
+            }
+        }
+        public string OutFileName
+        {
+            get
+            {
+                var key = _cmdDict.Keys.FirstOrDefault(k => (k == "o" || k == "outfile"));
+                if (!string.IsNullOrEmpty(key))
+                    return (_cmdDict[key]);
+                return string.Empty;
+
             }
         }
         public TestTypes TestType
