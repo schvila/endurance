@@ -37,7 +37,8 @@ namespace EnduranceTest
                     if (cad.Length > 0)
                     {
                         //double expectedDuration = GetExpectedDuration(method);
-                        _methodsList.Add(new TestedMethod(method, new TestedType(testtyp)));
+                        if(TestedMethod.IsTestable(method))
+                            _methodsList.Add(new TestedMethod(method, new TestedType(testtyp)));
                     }
                 }
             }

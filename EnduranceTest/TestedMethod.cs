@@ -45,6 +45,16 @@ namespace EnduranceTest
 
             return res;
         }
+        public static bool IsTestable(MethodInfo methodInfo)
+        {
+            var p = methodInfo.GetParameters();
+            if (p.Length == 0)
+                return true;
+            if (p.Length == 1 && p[0].ParameterType.FullName == "System.IO.TextWriter")
+                return true;
+
+            return false;
+        }
 
 
     }
