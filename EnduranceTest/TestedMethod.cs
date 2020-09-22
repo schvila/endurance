@@ -15,6 +15,7 @@ namespace EnduranceTest
         public TestedType MethodOwnerType;
         public string ClassName => MethodOwnerType.TestType.Name;
         public string ClassFullName => MethodOwnerType.TestType.FullName;
+        public string TestFullName => $"[{ClassFullName}] [{Name}]";
         public double Duration { get; set; }
         public string Name => _methodInfo.Name;
         public double Probability { get; set; }
@@ -37,13 +38,22 @@ namespace EnduranceTest
             }
             else if (p.Length == 1 && p[0].ParameterType.FullName == "System.IO.TextWriter")
             {
-                //p[0].ParameterType.Equals(typeof(int)).Dump("isINT");
                 object[] parametersArray = new object[] { Console.Out };
                 res = TestMethod.Invoke(MethodOwnerType.Instance, parametersArray);
             }
 
 
             return res;
+        }
+        public static bool IsTestable(MethodInfo methodInfo)
+        {
+            var p = methodInfo.GetParameters();
+            if (p.Length == 0)
+                return true;
+            if (p.Length == 1 && p[0].ParameterType.FullName == "System.IO.TextWriter")
+                return true;
+
+            return false;
         }
 
 

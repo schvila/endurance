@@ -13,7 +13,20 @@ namespace EnduranceTest
     {
         static void Main(string[] args)
         {
+            //TestConsoleOut();
+            //Console.ReadLine();
+            //return;
+            if(args.Length < 3)
+            {
+                ReportUsage();
+                return;
+            }
             CmdLine cmdLine = new CmdLine(args);
+            if(string.IsNullOrEmpty(cmdLine.AssemblyPathName) || cmdLine.Minutes == 0)
+            {
+                ReportUsage();
+                return;
+            }
 
             if (!File.Exists(cmdLine.AssemblyPathName))
             {
@@ -39,11 +52,46 @@ namespace EnduranceTest
                 default:
                     Console.WriteLine("UNKNOWN test runner");
                     break;
-                }
-            if(runner != null)
+            }
+
+            if (runner != null)
+            {
                 runner.Run(testedMethods, cmdLine.Minutes);
+                Console.WriteLine($"{Environment.NewLine}----------------------------------{Environment.NewLine}");
+                testedMethods.SimpleReport();
+                Console.WriteLine($"{Environment.NewLine}----------------------------------{Environment.NewLine}");
+
+            }
             Console.WriteLine("*** Test finished press any key...");
             Console.ReadLine();
+        }
+
+        private static void TestConsoleOut()
+        {
+                List<string> ls = new List<string>()
+                {
+                    "123",
+                    "1234",
+                    "i1234",
+                    "WWW1234",
+                };
+                int width = ls.Max(s => s.Length);
+                ls.ForEach(l => Console.WriteLine($"{l.FormatWidth(width)} ahoj"));
+            }
+
+
+        private static void ReportUsage()
+        {
+            Console.WriteLine(
+@"Usage : 
+EnduranceTest.exe TestAssembly.dll -test all|random|durationadjusted -minutes 1
+mandatory: 
+    assembly.dll name or PathName
+    -minutes greater than zero
+default:
+    -test all");
+            Console.ReadLine();
+
         }
     }
     public class CmdLine

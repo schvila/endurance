@@ -16,7 +16,5 @@ namespace ColorSemTestLibrary.Common
             _description = description;
         }
         public string Description => _description;
-
-
     }
 }

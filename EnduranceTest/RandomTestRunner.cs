@@ -34,8 +34,6 @@ namespace EnduranceTest
             method.Invoke();
             method.Duration = methodSw.Elapsed.TotalSeconds;
             Console.WriteLine($"[{method.ClassFullName}] [{method.Name}]  Duration {method.Duration}");
-
-
         }
     }
 }
