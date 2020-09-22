@@ -42,5 +42,26 @@ namespace EnduranceTest
                 }
             }
         }
+        public void SimpleReport()
+        {
+            int width = _methodsList.Max(m => m.TestFullName.Length);
+            Console.WriteLine($"{"Test name".FormatWidth(width)} Duration");
+
+            foreach (var test in _methodsList)
+            {
+                Console.WriteLine($"{test.TestFullName.FormatWidth(width)} {test.Duration}");
+            }
+        }
+
     }
+    public static class ExtensionUtils
+    {
+        public static string FormatWidth(this string text, int width)
+        {
+            string fmt = "{0,-" + width + "}";
+            var arg = text.Length > width ? text.Substring(0, width) : text;
+            return string.Format(fmt, arg);
+        }
+    }
+
 }

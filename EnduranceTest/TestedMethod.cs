@@ -15,6 +15,7 @@ namespace EnduranceTest
         public TestedType MethodOwnerType;
         public string ClassName => MethodOwnerType.TestType.Name;
         public string ClassFullName => MethodOwnerType.TestType.FullName;
+        public string TestFullName => $"[{ClassFullName}] [{Name}]";
         public double Duration { get; set; }
         public string Name => _methodInfo.Name;
         public double Probability { get; set; }
