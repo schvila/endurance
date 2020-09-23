@@ -15,7 +15,8 @@ namespace EnduranceTest
                 methodSw.Restart();
                 testMethod.Invoke(writer);
                 testMethod.Duration = methodSw.Elapsed.TotalSeconds;
-                Console.WriteLine($"[{testMethod.Name}] duration {testMethod.Duration}");
+                Console.WriteLine(testMethod.TestDurationFormatted(_methods.TestNameWidth));
+
             }
         }
     }

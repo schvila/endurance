@@ -43,26 +43,31 @@ namespace EnduranceTest
                 }
             }
         }
+        private int _testNameWidth = -1;
+        public int TestNameWidth
+        {
+            get
+            {
+                if(_testNameWidth == -1)
+                {
+                    if (_methodsList.Count() > 0)
+                        _testNameWidth = _methodsList.Max(m => m.TestFullName.Length);
+                    else
+                        _testNameWidth = 50;
+                }
+                return _testNameWidth;
+            }
+        }
         public void SimpleReport()
         {
-            int width = _methodsList.Max(m => m.TestFullName.Length);
-            Console.WriteLine($"{"Test name".FormatWidth(width)} Duration");
+            Console.WriteLine($"{"Test name".FormatWidth(TestNameWidth)} Duration");
 
             foreach (var test in _methodsList)
             {
-                Console.WriteLine($"{test.TestFullName.FormatWidth(width)} {test.Duration}");
+                Console.WriteLine(test.TestDurationFormatted(TestNameWidth));
             }
         }
 
-    }
-    public static class ExtensionUtils
-    {
-        public static string FormatWidth(this string text, int width)
-        {
-            string fmt = "{0,-" + width + "}";
-            var arg = text.Length > width ? text.Substring(0, width) : text;
-            return string.Format(fmt, arg);
-        }
     }
 
 }

@@ -52,7 +52,21 @@ namespace EnduranceTest
                 (p.Length == 1 && p[0].ParameterType.FullName == "System.IO.TextWriter"));
 
         }
+        public string TestDurationFormatted(int width)
+        {
+            return $"{TestFullName.FormatWidth(width)} {Duration}";
+        }
 
 
     }
+    public static class ExtensionUtils
+    {
+        public static string FormatWidth(this string text, int width)
+        {
+            string fmt = "{0,-" + width + "}";
+            var arg = text.Length > width ? text.Substring(0, width) : text;
+            return string.Format(fmt, arg);
+        }
+    }
+
 }
