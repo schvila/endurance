@@ -49,7 +49,7 @@ namespace EnduranceTest
 
                     test.Duration = methodSw.Elapsed.TotalSeconds;
                     //Console.WriteLine($"[{test.ClassFullName}] [{test.Name}]  Duration {test.Duration}");
-                    Console.WriteLine(test.TestDurationFormatted(_methods.TestNameWidth));
+                    Console.WriteLine(test.ToShortDurationString(_methods.TestNameWidth));
 
                     test.TimesExecuted++;
                     EvaluateProbabilities();

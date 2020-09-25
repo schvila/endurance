@@ -36,7 +36,6 @@ namespace EnduranceTest
                     var cad = method.GetCustomAttributes(false);
                     if (cad.Length > 0)
                     {
-                        //double expectedDuration = GetExpectedDuration(method);
                         if(TestedMethod.IsTestable(method))
                             _methodsList.Add(new TestedMethod(method, new TestedType(testtyp)));
                     }
@@ -64,7 +63,7 @@ namespace EnduranceTest
 
             foreach (var test in _methodsList)
             {
-                Console.WriteLine(test.TestDurationFormatted(TestNameWidth));
+                Console.WriteLine(test.ToShortDurationString(TestNameWidth));
             }
         }
 

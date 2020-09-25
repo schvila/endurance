@@ -43,9 +43,13 @@ namespace EnduranceTest
                 }
                 TestedMethods testedMethods = new TestedMethods(cmdLine.AssemblyPathName);
                 Console.WriteLine($"Methods to test:  {testedMethods.Methods.Count}");
+                CmdLine.TestTypes actualTest = cmdLine.TestType;
+                if (testedMethods.Methods.Count == 1 && actualTest == CmdLine.TestTypes.DurationAdjusted)
+                    actualTest = CmdLine.TestTypes.Random;
+
 
                 ITestRunner runner = null;
-                switch (cmdLine.TestType)
+                switch (actualTest)
                 {
                     case CmdLine.TestTypes.Random:
                         runner = new RandomTestRunner();

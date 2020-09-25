@@ -9,13 +9,13 @@ namespace EnduranceTest
         public void Run(TestedMethods methods, int minutes, System.IO.TextWriter writer)
         {
             _methods = methods;
+            Stopwatch methodSw = new Stopwatch();
             foreach (var testMethod in _methods.Methods)
             {
-                Stopwatch methodSw = new Stopwatch();
                 methodSw.Restart();
                 testMethod.Invoke(writer);
-                testMethod.Duration = methodSw.Elapsed.TotalSeconds;
-                Console.WriteLine(testMethod.TestDurationFormatted(_methods.TestNameWidth));
+                testMethod.Duration = methodSw.Elapsed.;
+                Console.WriteLine(testMethod.ToShortDurationString(_methods.TestNameWidth));
 
             }
         }

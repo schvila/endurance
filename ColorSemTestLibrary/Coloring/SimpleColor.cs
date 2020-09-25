@@ -24,27 +24,27 @@ namespace ColoringColorSemTestLibrary
                 _logWriter.Info($"[SimpleColor] org Setup at {DateTime.Now.ToString("dd.MM hh:mm:ss.fff")}");
 
         }
-        [EnduranceTest]
-        public void TestSimpleColor()
-        {
-            WaitSeconds(0.3451);
-        }
-        public void NoTested1() { }
-        public void NoTested2() { }
+        //[EnduranceTest]
+        //public void TestSimpleColor()
+        //{
+        //    WaitSeconds(0.3451);
+        //}
+        //public void NoTested1() { }
+        //public void NoTested2() { }
 
-        [EnduranceTest]
-        public void BlendingNoDuration()
-        {
-            WaitSeconds(0.0497869);
-        }
-        [EnduranceTest]
-        public void LoggerTest(System.IO.TextWriter logWriter)
-        {
-            Setup(logWriter);
-            TextWriterLogger log = new TextWriterLogger(logWriter);
-            _logWriter.Info("SimpleColor, LoggerTest ok");
-            WaitSeconds(0.0197869, _logWriter);
-        }
+        //[EnduranceTest]
+        //public void BlendingNoDuration()
+        //{
+        //    WaitSeconds(0.0497869);
+        //}
+        //[EnduranceTest]
+        //public void LoggerTest(System.IO.TextWriter logWriter)
+        //{
+        //    Setup(logWriter);
+        //    TextWriterLogger log = new TextWriterLogger(logWriter);
+        //    _logWriter.Info("SimpleColor, LoggerTest ok");
+        //    WaitSeconds(0.0197869, _logWriter);
+        //}
 
         private void WaitSeconds(double secs, ILogger log = null)
         {
