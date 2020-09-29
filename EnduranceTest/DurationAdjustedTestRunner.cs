@@ -19,7 +19,7 @@ namespace EnduranceTest
         {
             _writer = writer;
             //
-            var allTestsRunner = new AllTestsRunner();
+            var allTestsRunner = new AllTestsRunner(true);
             allTestsRunner.Run(methods, minutes, _writer);
             _methods = methods;
             _testDuration = (long)minutes * 60_000;
@@ -47,11 +47,12 @@ namespace EnduranceTest
                     Stopwatch methodSw = Stopwatch.StartNew();
                     test.Invoke( _writer );
 
-                    test.Duration = methodSw.Elapsed.TotalSeconds;
-                    //Console.WriteLine($"[{test.ClassFullName}] [{test.Name}]  Duration {test.Duration}");
+                    test.Duration = methodSw.Elapsed.TotalMilliseconds;
+                    test.Share += test.Duration;
+                    test.TimesExecuted++;
+
                     Console.WriteLine(test.ToShortDurationString(_methods.TestNameWidth));
 
-                    test.TimesExecuted++;
                     EvaluateProbabilities();
                     return;
                 }

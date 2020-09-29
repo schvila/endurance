@@ -59,11 +59,12 @@ namespace EnduranceTest
         }
         public void SimpleReport()
         {
-            Console.WriteLine($"{"Test name".FormatWidth(TestNameWidth)} Duration");
+            Console.WriteLine(string.Format($"{"Test name".FormatWidth(TestNameWidth)} {{0,-15}} {{1,-15}} {{2,-15}}",
+                "Share[min]", "Executed", "Avg. dur.[ms]"));
 
             foreach (var test in _methodsList)
             {
-                Console.WriteLine(test.ToShortDurationString(TestNameWidth));
+                Console.WriteLine(test.ToReportString(TestNameWidth));
             }
         }
 

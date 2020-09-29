@@ -17,6 +17,7 @@ namespace EnduranceTest
         public string ClassFullName => MethodOwnerType.TestType.FullName;
         public string TestFullName => $"[{ClassFullName}] [{Name}]";
         public double Duration { get; set; }
+        public double Share { get; set; }
         public string Name => _methodInfo.Name;
         public double Probability { get; set; }
         public int TimesExecuted { get; set; }
@@ -51,6 +52,17 @@ namespace EnduranceTest
             return ((p.Length == 0) ||
                 (p.Length == 1 && p[0].ParameterType.FullName == "System.IO.TextWriter"));
 
+        }
+        /*
+                    Console.WriteLine($"{"Test name".FormatWidth(TestNameWidth)} {0, 15} {1,15} {2,15}",
+                        "Share[min]", "Executed", "Avg. dur.[ms]");
+         */
+        public string ToReportString(int width)
+        {
+            return string.Format($"{TestFullName.FormatWidth(width)} {{0,-15:N5}} {{1,-15}} {{2,-15:N5}}",
+                Share/60_000,
+                TimesExecuted,
+                Share/TimesExecuted);
         }
         public string ToShortDurationString(int width)
         {

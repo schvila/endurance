@@ -68,7 +68,8 @@ namespace EnduranceTest
                 if (runner != null)
                 {
                     runner.Run(testedMethods, cmdLine.Minutes, writer);
-                    Console.WriteLine($"{Environment.NewLine}----------------------------------{Environment.NewLine}");
+                    Console.WriteLine($"{Environment.NewLine}---Test statistics---{Environment.NewLine}");
+
                     testedMethods.SimpleReport();
                     Console.WriteLine($"{Environment.NewLine}----------------------------------{Environment.NewLine}");
 
@@ -95,20 +96,6 @@ namespace EnduranceTest
 
             return  new StreamWriter(outFileName);
         }
-
-        private static void TestConsoleOut()
-        {
-                List<string> ls = new List<string>()
-                {
-                    "123",
-                    "1234",
-                    "i1234",
-                    "WWW1234",
-                };
-                int width = ls.Max(s => s.Length);
-                ls.ForEach(l => Console.WriteLine($"{l.FormatWidth(width)} ahoj"));
-            }
-
 
         private static void ReportUsage()
         {

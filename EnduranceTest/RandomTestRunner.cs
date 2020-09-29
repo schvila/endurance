@@ -34,8 +34,9 @@ namespace EnduranceTest
             var method = _methods.Methods[index];
             Stopwatch methodSw = Stopwatch.StartNew();
             method.Invoke(_writer);
-            method.Duration = methodSw.Elapsed.TotalSeconds;
-            //Console.WriteLine($"[{method.ClassFullName}] [{method.Name}]  Duration {method.Duration}");
+            method.Duration = methodSw.Elapsed.TotalMilliseconds;
+            method.Share += method.Duration;
+            method.TimesExecuted++;
             Console.WriteLine(method.ToShortDurationString(_methods.TestNameWidth));
         }
     }
