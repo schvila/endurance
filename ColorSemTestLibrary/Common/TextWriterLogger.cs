@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorSemTestLibrary.Common
+﻿namespace ColorSemTestLibrary.Common
 {
     public class TextWriterLogger : ILogger
     {
@@ -21,17 +15,17 @@ namespace ColorSemTestLibrary.Common
 
         public void Error(string message)
         {
-            Log("[  ERR!  ] " + message);
+            Log("[!E] " + message);
         }
 
         public void Info(string message)
         {
-            Log("[  INFO  ] " + message);
+            Log("[I] " + message);
         }
 
         public void Warning(string message)
         {
-            Log("[  WARN  ] " + message);
+            Log("[W] " + message);
         }
     }
 }

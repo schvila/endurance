@@ -12,9 +12,11 @@ namespace EnduranceTest
         private TestedMethods _methods;
         private int _testMax;
         private long _testDuration;
+        System.IO.TextWriter _writer;
 
-        public void Run(TestedMethods methods, int minutes)
+        public void Run(TestedMethods methods, int minutes, System.IO.TextWriter writer)
         {
+            _writer = writer;
             _methods = methods;
             _testDuration = (long)minutes * 60_000;
             _testMax = _methods.Methods.Count;
@@ -31,9 +33,11 @@ namespace EnduranceTest
             int index = random.Next(0, _testMax);
             var method = _methods.Methods[index];
             Stopwatch methodSw = Stopwatch.StartNew();
-            method.Invoke();
-            method.Duration = methodSw.Elapsed.TotalSeconds;
-            Console.WriteLine($"[{method.ClassFullName}] [{method.Name}]  Duration {method.Duration}");
+            method.Invoke(_writer);
+            method.Duration = methodSw.Elapsed.TotalMilliseconds;
+            method.Share += method.Duration;
+            method.TimesExecuted++;
+            Console.WriteLine(method.ToShortDurationString(_methods.TestNameWidth));
         }
     }
 }

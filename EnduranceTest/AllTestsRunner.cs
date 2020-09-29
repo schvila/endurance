@@ -6,16 +6,26 @@ namespace EnduranceTest
     public class AllTestsRunner: ITestRunner
     {
         private TestedMethods _methods;
-        public void Run(TestedMethods methods, int minutes)
+        private bool _durationOnly;
+        public AllTestsRunner(bool durationOnly = false)
+        {
+            _durationOnly = durationOnly;
+        }
+        public void Run(TestedMethods methods, int minutes, System.IO.TextWriter writer)
         {
             _methods = methods;
+            Stopwatch methodSw = new Stopwatch();
             foreach (var testMethod in _methods.Methods)
             {
-                Stopwatch methodSw = new Stopwatch();
                 methodSw.Restart();
-                testMethod.Invoke();
-                testMethod.Duration = methodSw.Elapsed.TotalSeconds;
-                Console.WriteLine($"[{testMethod.Name}] duration {testMethod.Duration}");
+                testMethod.Invoke(_durationOnly? null: writer);
+                testMethod.Duration = methodSw.Elapsed.TotalMilliseconds;
+                if (!_durationOnly)
+                {
+                    testMethod.Share += testMethod.Duration;
+                    testMethod.TimesExecuted++;
+                    Console.WriteLine(testMethod.ToShortDurationString(_methods.TestNameWidth));
+                }
             }
         }
     }

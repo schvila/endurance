@@ -8,6 +8,6 @@ namespace EnduranceTest
 {
     interface ITestRunner
     {
-        void Run(TestedMethods methods, int minutes);
+        void Run(TestedMethods methods, int minutes, System.IO.TextWriter writer);
     }
 }

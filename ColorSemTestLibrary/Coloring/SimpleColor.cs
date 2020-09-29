@@ -12,6 +12,18 @@ namespace ColoringColorSemTestLibrary
     [EnduranceTest("Simple coloring test")]
     public class SimpleColor
     {
+        ILogger _log;
+        private void Setup(System.IO.TextWriter logWriter)
+        {
+            if (_log == null)
+            {
+                _log = logWriter == null ? new NullLogger() as ILogger : new TextWriterLogger(logWriter) as ILogger;
+                _log.Info($"*[SimpleColor] New Setup at {DateTime.Now.ToString("dd.MM hh:mm:ss.fff")}");
+            }
+            else
+                _log.Info($"[SimpleColor] org Setup at {DateTime.Now.ToString("dd.MM hh:mm:ss.fff")}");
+
+        }
         [EnduranceTest]
         public void TestSimpleColor()
         {
@@ -28,12 +40,13 @@ namespace ColoringColorSemTestLibrary
         [EnduranceTest]
         public void LoggerTest(System.IO.TextWriter logWriter)
         {
-            TextWriterLogger log = new TextWriterLogger(logWriter);
-            log.Info("SimpleColor, LoggerTest ok");
-            WaitSeconds(0.0197869, log);
+            Setup(logWriter);
+            //TextWriterLogger log = new TextWriterLogger(logWriter);
+            _log.Info("SimpleColor, LoggerTest ok");
+            WaitSeconds(0.0197869, _log);
         }
 
-        private void WaitSeconds(double secs, TextWriterLogger log = null)
+        private void WaitSeconds(double secs, ILogger log = null)
         {
             Stopwatch sw = Stopwatch.StartNew();
             string ws = string.Empty;

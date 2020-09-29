@@ -13,12 +13,14 @@ namespace EnduranceTest
         private int _testMax;
         private long _testDuration;
         private Random _random = new Random();
+        System.IO.TextWriter _writer;
 
-        public void Run(TestedMethods methods, int minutes)
+        public void Run(TestedMethods methods, int minutes, System.IO.TextWriter writer)
         {
+            _writer = writer;
             //
-            var allTestsRunner = new AllTestsRunner();
-            allTestsRunner.Run(methods, minutes);
+            var allTestsRunner = new AllTestsRunner(true);
+            allTestsRunner.Run(methods, minutes, _writer);
             _methods = methods;
             _testDuration = (long)minutes * 60_000;
             _testMax = _methods.Methods.Count;
@@ -43,12 +45,14 @@ namespace EnduranceTest
                 if (randomProbability <= test.Probability)
                 {
                     Stopwatch methodSw = Stopwatch.StartNew();
-                    test.Invoke();
+                    test.Invoke( _writer );
 
-                    test.Duration = methodSw.Elapsed.TotalSeconds;
-                    Console.WriteLine($"[{test.ClassFullName}] [{test.Name}]  Duration {test.Duration}");
-
+                    test.Duration = methodSw.Elapsed.TotalMilliseconds;
+                    test.Share += test.Duration;
                     test.TimesExecuted++;
+
+                    Console.WriteLine(test.ToShortDurationString(_methods.TestNameWidth));
+
                     EvaluateProbabilities();
                     return;
                 }
