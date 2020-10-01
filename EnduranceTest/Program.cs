@@ -70,7 +70,10 @@ namespace EnduranceTest
                     runner.Run(testedMethods, cmdLine.Minutes, writer);
                     Console.WriteLine($"{Environment.NewLine}---Test statistics---{Environment.NewLine}");
 
-                    testedMethods.SimpleReport();
+                    if (cmdLine.CsvFormat)
+                        testedMethods.CsvReport();
+                    else
+                        testedMethods.SimpleReport();
                     Console.WriteLine($"{Environment.NewLine}----------------------------------{Environment.NewLine}");
 
                 }
@@ -101,14 +104,16 @@ namespace EnduranceTest
         {
             Console.WriteLine(
 @"Usage : 
-EnduranceTest.exe TestAssembly.dll -test all|random|durationadjusted -minutes 1
+EnduranceTest.exe TestAssembly.dll -test all|random|durationadjusted -minutes 1 -format default|csv
 mandatory: 
     assembly.dll name or PathName
     -minutes greater than zero
 default:
     -test all
+    -format default 
 optional:
-    -outfile tested method log file name");
+    -outfile tested method log file name
+    -format default|csv console output");
             Console.ReadLine();
 
         }
@@ -167,6 +172,18 @@ optional:
                 if (!string.IsNullOrEmpty(key))
                     return Convert.ToInt32(_cmdDict[key]);
                 return 0;
+            }
+        }
+        public bool CsvFormat
+        {
+            get
+            {
+                var key = _cmdDict.Keys.FirstOrDefault(k => (k == "f" || k == "format"));
+                if (!string.IsNullOrEmpty(key) && _cmdDict[key].ToLowerInvariant() == "csv")
+                {
+                    return true;
+                }
+                return false;
             }
         }
         public string OutFileName

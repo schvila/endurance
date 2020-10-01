@@ -64,6 +64,13 @@ namespace EnduranceTest
                 TimesExecuted,
                 Share/TimesExecuted);
         }
+        public string ToCsvString()
+        {
+            return string.Format($"\"{TestFullName}\", \"{{0:N5}}\", \"{{1}}\", \"{{2:N5}}\"",
+                Share / 60_000,
+                TimesExecuted,
+                Share / TimesExecuted);
+        }
         public string ToShortDurationString(int width)
         {
             return $"{TestFullName.FormatWidth(width)} {Duration}";

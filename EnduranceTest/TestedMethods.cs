@@ -59,12 +59,21 @@ namespace EnduranceTest
         }
         public void SimpleReport()
         {
-            Console.WriteLine(string.Format($"{"Test name".FormatWidth(TestNameWidth)} {{0,-15}} {{1,-15}} {{2,-15}}",
+            Console.WriteLine(string.Format($"{"Test".FormatWidth(TestNameWidth)} {{0,-15}} {{1,-15}} {{2,-15}}",
                 "Share[min]", "Executed", "Avg. dur.[ms]"));
 
             foreach (var test in _methodsList)
             {
                 Console.WriteLine(test.ToReportString(TestNameWidth));
+            }
+        }
+        public void CsvReport()
+        {
+            Console.WriteLine("\"Test\",\"Share[min]\", \"Executed\", \"Avgerage duration[ms]\"");
+
+            foreach (var test in _methodsList)
+            {
+                Console.WriteLine(test.ToCsvString());
             }
         }
 
